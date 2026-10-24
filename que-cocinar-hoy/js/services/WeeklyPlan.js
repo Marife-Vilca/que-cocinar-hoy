@@ -38,6 +38,16 @@ export class WeeklyPlan {
     return WEEK_DAYS.find((day) => this.#plan[day] === null) ?? WEEK_DAYS[0];
   }
 
+  snapshot() {
+    return { weekKey: this.#mondayKey(), plan: { ...this.#plan } };
+  }
+
+  restore({ weekKey, plan }) {
+    if (weekKey !== this.#mondayKey()) return;
+    this.#plan = { ...this.#emptyPlan(), ...plan };
+    this.#persist();
+  }
+
   reset() {
     this.#plan = this.#emptyPlan();
     this.#persist();

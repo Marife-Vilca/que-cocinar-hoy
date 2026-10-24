@@ -14,12 +14,15 @@ export class App {
   #plan;
   #modals;
   #category = "Todos";
-  #pendingDishId = null; // plato elegido en la ruleta
-  #targetDay = null; // día elegido en el plan semanal
+  #pendingDishId = null; 
+  #targetDay = null; 
   #pendingDeleteId = null;
   #spinning = false;
+  #spinning = false;
+  #backup;
 
-  constructor(repo, plan) {
+  constructor(repo, plan, backup) {
+    this.#backup = backup;
     this.#repo = repo;
     this.#plan = plan;
   }
@@ -40,6 +43,7 @@ export class App {
     document.addEventListener("click", (e) => this.#onClick(e));
     $("searchInput").addEventListener("input", () => this.#renderCatalog());
     $("dishForm").addEventListener("submit", (e) => this.#saveDish(e));
+    $("importFile").addEventListener("change", (e) => this.#importData(e));
 
     this.#showView("ruleta");
   }
@@ -66,6 +70,8 @@ export class App {
       "confirm-delete": () => this.#confirmDelete(),
       "reset-menu": () => confirm("¿Restaurar el catálogo con los platos iniciales?") && (this.#repo.restoreDefaults(), this.#refresh()),
       filter: () => { this.#category = id; this.#renderCatalog(); },
+      "export-data": () => this.#backup.export(),
+      "import-data": () => $("importFile").click(),
       "close-modal": () => this.#modals[id].close(),
     };
     handlers[action]?.();
@@ -119,6 +125,19 @@ export class App {
       $("resultsContainer").innerHTML = Roulette.pick(available, ROULETTE_SIZE).map(tpl.resultCard).join("");
       this.#spinning = false;
     }, SPIN_MS);
+  }
+
+    async #importData(event) {
+    const [file] = event.target.files;
+    event.target.value = ""; 
+    if (!file || !confirm("Esto reemplazará los platos y el plan actuales. ¿Continuar?")) return;
+    try {
+      await this.#backup.import(file);
+      this.#refresh();
+      alert("Datos importados correctamente.");
+    } catch {
+      alert("El archivo no es válido.");
+    }
   }
 
   #openAssignModal(dishId) {

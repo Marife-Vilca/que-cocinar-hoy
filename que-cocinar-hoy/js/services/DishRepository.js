@@ -32,6 +32,11 @@ export class DishRepository {
     this.#persist();
   }
 
+  replaceAll(dishes) {
+    this.#dishes = dishes.map((d) => new Dish(d));
+    this.#persist();
+  }
+
   restoreDefaults() {
     this.#dishes = this.#defaults.map((d) => new Dish(d));
     this.#persist();

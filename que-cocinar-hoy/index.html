@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,17 @@
   <script src="js/tailwind.config.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body class="min-h-screen flex justify-center items-start sm:py-6">
 
-  <div class="w-full max-w-[480px] min-h-screen sm:min-h-[880px] sm:h-[880px] bg-warmBg sm:rounded-[36px] sm:shadow-2xl sm:border-[6px] sm:border-white overflow-hidden relative flex flex-col">
+  <div
+    class="w-full max-w-[480px] min-h-screen sm:min-h-[880px] sm:h-[880px] bg-warmBg sm:rounded-[36px] sm:shadow-2xl sm:border-[6px] sm:border-white overflow-hidden relative flex flex-col">
 
     <!-- Header -->
     <header class="px-5 pt-5 pb-3 bg-gradient-to-b from-amberLight/70 to-transparent flex-shrink-0">
@@ -25,10 +30,12 @@
           </div>
           <div>
             <span class="font-bold text-base tracking-tight text-darkText block leading-tight">¡Qué Cocinar Hoy!</span>
-            <span class="text-[10px] text-terracotta font-extrabold uppercase tracking-wider" id="headerDayBadge"></span>
+            <span class="text-[10px] text-terracotta font-extrabold uppercase tracking-wider"
+              id="headerDayBadge"></span>
           </div>
         </div>
-        <button data-action="add" class="flex items-center gap-1.5 px-3 py-1.5 bg-terracotta/10 text-terracotta hover:bg-terracotta/20 rounded-full text-xs font-bold transition active:scale-95">
+        <button data-action="add"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-terracotta/10 text-terracotta hover:bg-terracotta/20 rounded-full text-xs font-bold transition active:scale-95">
           <i class="fa-solid fa-plus text-xs"></i><span>Nuevo</span>
         </button>
       </div>
@@ -41,15 +48,20 @@
       <section id="view-ruleta" class="flex flex-col items-center pt-1">
         <div class="w-full my-2 flex flex-col items-center justify-center relative">
           <div class="relative group cursor-pointer" data-action="spin">
-            <div class="absolute -inset-1.5 bg-gradient-to-r from-terracotta to-amberAccent rounded-full blur opacity-45 group-hover:opacity-75 transition duration-300"></div>
-            <div class="relative w-40 h-40 rounded-full bg-gradient-to-br from-amber-50 via-orange-100 to-amber-100 p-2 shadow-xl border-4 border-white flex items-center justify-center">
-              <div id="rouletteWheel" class="w-full h-full rounded-full border-4 border-dashed border-amberAccent/60 flex items-center justify-center relative transition-transform">
+            <div
+              class="absolute -inset-1.5 bg-gradient-to-r from-terracotta to-amberAccent rounded-full blur opacity-45 group-hover:opacity-75 transition duration-300">
+            </div>
+            <div
+              class="relative w-40 h-40 rounded-full bg-gradient-to-br from-amber-50 via-orange-100 to-amber-100 p-2 shadow-xl border-4 border-white flex items-center justify-center">
+              <div id="rouletteWheel"
+                class="w-full h-full rounded-full border-4 border-dashed border-amberAccent/60 flex items-center justify-center relative transition-transform">
                 <i class="fa-solid fa-bowl-rice text-terracotta text-lg absolute top-3"></i>
                 <i class="fa-solid fa-burger text-amberAccent text-lg absolute bottom-3"></i>
                 <i class="fa-solid fa-fish text-terracotta text-lg absolute left-3"></i>
                 <i class="fa-solid fa-drumstick-bite text-amberAccent text-lg absolute right-3"></i>
               </div>
-              <div class="absolute inset-0 m-auto w-24 h-24 rounded-full bg-gradient-to-tr from-terracotta to-amberAccent text-white flex flex-col items-center justify-center shadow-lg border-2 border-white pulse-button active:scale-95 transition">
+              <div
+                class="absolute inset-0 m-auto w-24 h-24 rounded-full bg-gradient-to-tr from-terracotta to-amberAccent text-white flex flex-col items-center justify-center shadow-lg border-2 border-white pulse-button active:scale-95 transition">
                 <i class="fa-solid fa-dice-three text-2xl mb-0.5"></i>
                 <span class="text-[10px] font-extrabold uppercase tracking-wider">¡Girar!</span>
               </div>
@@ -63,16 +75,20 @@
 
         <div class="w-full flex justify-between items-center mt-2 mb-3">
           <h2 class="font-serif font-bold text-base text-darkText">3 Opciones Sugeridas</h2>
-          <span id="availableRuletaBadge" class="text-[11px] font-bold text-amberAccent bg-amberLight px-2.5 py-1 rounded-full"></span>
+          <span id="availableRuletaBadge"
+            class="text-[11px] font-bold text-amberAccent bg-amberLight px-2.5 py-1 rounded-full"></span>
         </div>
 
         <div id="resultsContainer" class="w-full flex flex-col gap-3 min-h-[180px]">
-          <div class="glass-card rounded-2xl p-6 text-center flex flex-col items-center justify-center border-dashed border-2 border-amberAccent/30">
-            <div class="w-12 h-12 rounded-full bg-amberLight flex items-center justify-center text-amberAccent text-xl mb-2">
+          <div
+            class="glass-card rounded-2xl p-6 text-center flex flex-col items-center justify-center border-dashed border-2 border-amberAccent/30">
+            <div
+              class="w-12 h-12 rounded-full bg-amberLight flex items-center justify-center text-amberAccent text-xl mb-2">
               <i class="fa-solid fa-kitchen-set"></i>
             </div>
             <h3 class="font-bold text-darkText text-sm">¿Qué cenamos/almorzamos hoy?</h3>
-            <p class="text-xs text-subText mt-1 max-w-[260px]">Toca la ruleta para obtener 3 opciones. Los platos elegidos previamente en el plan semanal no volverán a salir.</p>
+            <p class="text-xs text-subText mt-1 max-w-[260px]">Toca la ruleta para obtener 3 opciones. Los platos
+              elegidos previamente en el plan semanal no volverán a salir.</p>
           </div>
         </div>
       </section>
@@ -84,11 +100,13 @@
             <h2 class="font-serif font-bold text-lg text-darkText">Plan de la Semana</h2>
             <p class="text-[11px] text-subText">Registro de platos cocinados</p>
           </div>
-          <button data-action="reset-week" class="text-xs font-bold text-terracotta bg-terracotta/10 hover:bg-terracotta/20 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition">
+          <button data-action="reset-week"
+            class="text-xs font-bold text-terracotta bg-terracotta/10 hover:bg-terracotta/20 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition">
             <i class="fa-solid fa-rotate-right text-[10px]"></i><span>Reiniciar Semana</span>
           </button>
         </div>
-        <div class="bg-amberLight/60 border border-amberAccent/20 rounded-xl p-2.5 mb-3 flex items-center gap-2 text-[11px] text-darkText">
+        <div
+          class="bg-amberLight/60 border border-amberAccent/20 rounded-xl p-2.5 mb-3 flex items-center gap-2 text-[11px] text-darkText">
           <i class="fa-solid fa-calendar-check text-amberAccent text-sm flex-shrink-0"></i>
           <span>El plan se limpia automáticamente todos los <strong>domingos a medianoche</strong>.</span>
         </div>
@@ -101,45 +119,67 @@
           <div class="relative">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-subText text-xs"></i>
             <input type="text" id="searchInput" placeholder="Buscar plato por nombre..."
-                   class="w-full pl-9 pr-4 py-2.5 bg-white rounded-xl text-xs border border-amberAccent/20 focus:outline-none focus:ring-2 focus:ring-terracotta shadow-sm">
+              class="w-full pl-9 pr-4 py-2.5 bg-white rounded-xl text-xs border border-amberAccent/20 focus:outline-none focus:ring-2 focus:ring-terracotta shadow-sm">
           </div>
           <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs" id="categoryChips"></div>
         </div>
         <div class="flex justify-between items-center my-1.5 text-xs">
           <span id="catalogCounterText" class="font-bold text-darkText"></span>
-          <button data-action="reset-menu" class="text-subText hover:text-terracotta font-medium flex items-center gap-1 underline">
+          <button data-action="reset-menu"
+            class="text-subText hover:text-terracotta font-medium flex items-center gap-1 underline">
             <i class="fa-solid fa-rotate-left text-[10px]"></i> Restaurar Menú
           </button>
+        </div>
+        <div class="flex gap-2 mb-3">
+          <button data-action="export-data"
+            class="flex-1 py-2 bg-white border border-amberAccent/20 text-darkText font-bold rounded-xl text-xs hover:bg-amberLight transition">
+            <i class="fa-solid fa-file-arrow-down mr-1 text-amberAccent"></i>Exportar datos
+          </button>
+          <button data-action="import-data"
+            class="flex-1 py-2 bg-white border border-amberAccent/20 text-darkText font-bold rounded-xl text-xs hover:bg-amberLight transition">
+            <i class="fa-solid fa-file-arrow-up mr-1 text-amberAccent"></i>Importar datos
+          </button>
+          <input type="file" id="importFile" accept="application/json" class="hidden">
         </div>
         <div id="catalogContainer" class="flex flex-col gap-2.5"></div>
       </section>
     </div>
 
     <!-- Navegación inferior -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amberAccent/15 px-4 py-2 flex justify-around items-center z-20">
-      <button data-action="view" data-id="ruleta" class="nav-btn flex flex-col items-center gap-0.5 text-terracotta transition">
+    <nav
+      class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amberAccent/15 px-4 py-2 flex justify-around items-center z-20">
+      <button data-action="view" data-id="ruleta"
+        class="nav-btn flex flex-col items-center gap-0.5 text-terracotta transition">
         <i class="fa-solid fa-dice text-base"></i><span class="text-[10px] font-bold">Ruleta</span>
       </button>
-      <button data-action="view" data-id="semana" class="nav-btn flex flex-col items-center gap-0.5 text-subText hover:text-terracotta transition">
+      <button data-action="view" data-id="semana"
+        class="nav-btn flex flex-col items-center gap-0.5 text-subText hover:text-terracotta transition">
         <i class="fa-solid fa-calendar-days text-base"></i><span class="text-[10px] font-bold">Plan Semanal</span>
       </button>
-      <button data-action="add" aria-label="Nuevo plato" class="w-10 h-10 rounded-full bg-gradient-to-tr from-terracotta to-amberAccent text-white flex items-center justify-center shadow-lg active:scale-90 transition -mt-4 border-2 border-white">
+      <button data-action="add" aria-label="Nuevo plato"
+        class="w-10 h-10 rounded-full bg-gradient-to-tr from-terracotta to-amberAccent text-white flex items-center justify-center shadow-lg active:scale-90 transition -mt-4 border-2 border-white">
         <i class="fa-solid fa-plus text-base"></i>
       </button>
-      <button data-action="view" data-id="catalogo" class="nav-btn flex flex-col items-center gap-0.5 text-subText hover:text-terracotta transition">
+      <button data-action="view" data-id="catalogo"
+        class="nav-btn flex flex-col items-center gap-0.5 text-subText hover:text-terracotta transition">
         <i class="fa-solid fa-utensils text-base"></i><span class="text-[10px] font-bold">Mis Platos</span>
       </button>
     </nav>
 
     <!-- Modal: agregar / editar plato -->
-    <div id="modalDishForm" class="modal modal--sheet is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center">
-      <div class="modal-content w-full max-w-[480px] bg-white rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div id="modalDishForm"
+      class="modal modal--sheet is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center">
+      <div
+        class="modal-content w-full max-w-[480px] bg-white rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-3">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full bg-amberLight text-amberAccent flex items-center justify-center"><i class="fa-solid fa-pen-to-square text-xs"></i></div>
+            <div class="w-8 h-8 rounded-full bg-amberLight text-amberAccent flex items-center justify-center"><i
+                class="fa-solid fa-pen-to-square text-xs"></i></div>
             <h3 class="font-serif font-bold text-base text-darkText" id="formModalTitle">Agregar Nuevo Plato</h3>
           </div>
-          <button data-action="close-modal" data-id="form" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200" aria-label="Cerrar">
+          <button data-action="close-modal" data-id="form"
+            class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200"
+            aria-label="Cerrar">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -148,56 +188,72 @@
           <div>
             <label class="block text-xs font-bold text-darkText mb-1">Nombre del plato *</label>
             <input type="text" name="name" required maxlength="60" placeholder="Ej. Lomo Saltado, Causa Rellena..."
-                   class="w-full px-3.5 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
+              class="w-full px-3.5 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-bold text-darkText mb-1">Categoría</label>
-              <select name="category" id="formCategory" class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg"></select>
+              <select name="category" id="formCategory"
+                class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg"></select>
             </div>
             <div>
               <label class="block text-xs font-bold text-darkText mb-1">Tiempo est.</label>
               <input type="text" name="time" placeholder="Ej. 25 min"
-                     class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
+                class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
             </div>
           </div>
           <div>
             <label class="block text-xs font-bold text-darkText mb-1">Dificultad</label>
-            <select name="difficulty" class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
-              <option>Fácil</option><option selected>Media</option><option>Difícil</option>
+            <select name="difficulty"
+              class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
+              <option>Fácil</option>
+              <option selected>Media</option>
+              <option>Difícil</option>
             </select>
           </div>
           <div>
             <label class="block text-xs font-bold text-darkText mb-1">URL de foto (opcional)</label>
             <input type="url" name="image" placeholder="https://..."
-                   class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
+              class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg">
           </div>
-          <button type="submit" class="mt-2 w-full py-3 bg-terracotta hover:bg-terracotta/90 text-white rounded-xl font-bold text-xs shadow-md transition active:scale-95">Guardar Plato</button>
+          <button type="submit"
+            class="mt-2 w-full py-3 bg-terracotta hover:bg-terracotta/90 text-white rounded-xl font-bold text-xs shadow-md transition active:scale-95">Guardar
+            Plato</button>
         </form>
       </div>
     </div>
 
     <!-- Modal: asignar plato a un día -->
-    <div id="modalAssignDay" class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-5">
-      <div class="modal-content w-full max-w-[360px] bg-white rounded-3xl p-5 text-center shadow-2xl flex flex-col items-center">
-        <div class="w-12 h-12 rounded-full bg-amberLight text-amberAccent flex items-center justify-center text-xl mb-2"><i class="fa-solid fa-calendar-plus"></i></div>
+    <div id="modalAssignDay"
+      class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-5">
+      <div
+        class="modal-content w-full max-w-[360px] bg-white rounded-3xl p-5 text-center shadow-2xl flex flex-col items-center">
+        <div
+          class="w-12 h-12 rounded-full bg-amberLight text-amberAccent flex items-center justify-center text-xl mb-2"><i
+            class="fa-solid fa-calendar-plus"></i></div>
         <h3 class="font-serif font-bold text-base text-darkText">Asignar al Plan Semanal</h3>
         <p id="assignDishTitle" class="text-xs text-subText mt-1 font-semibold"></p>
         <label class="block text-xs font-bold text-darkText mt-4 mb-1.5 w-full text-left">Selecciona el día:</label>
-        <select id="selectAssignDay" class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg mb-4"></select>
+        <select id="selectAssignDay"
+          class="w-full px-3 py-2.5 rounded-xl border border-amberAccent/20 text-xs focus:outline-none focus:ring-2 focus:ring-terracotta bg-warmBg mb-4"></select>
         <div class="flex gap-2 w-full">
-          <button data-action="close-modal" data-id="assign" class="flex-1 py-2.5 bg-gray-100 text-subText font-bold rounded-xl text-xs hover:bg-gray-200 transition">Cancelar</button>
-          <button data-action="confirm-assign" class="flex-1 py-2.5 bg-terracotta text-white font-bold rounded-xl text-xs hover:bg-terracotta/90 transition shadow">Confirmar</button>
+          <button data-action="close-modal" data-id="assign"
+            class="flex-1 py-2.5 bg-gray-100 text-subText font-bold rounded-xl text-xs hover:bg-gray-200 transition">Cancelar</button>
+          <button data-action="confirm-assign"
+            class="flex-1 py-2.5 bg-terracotta text-white font-bold rounded-xl text-xs hover:bg-terracotta/90 transition shadow">Confirmar</button>
         </div>
       </div>
     </div>
 
     <!-- Modal: elegir plato para un día -->
-    <div id="modalSelectDish" class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="modalSelectDish"
+      class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="modal-content w-full max-w-[380px] bg-white rounded-3xl p-5 shadow-2xl flex flex-col max-h-[80vh]">
         <div class="flex justify-between items-center mb-3">
           <h3 class="font-serif font-bold text-base text-darkText" id="selectForDayTitle"></h3>
-          <button data-action="close-modal" data-id="select" class="w-7 h-7 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-xs" aria-label="Cerrar">
+          <button data-action="close-modal" data-id="select"
+            class="w-7 h-7 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-xs"
+            aria-label="Cerrar">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -207,14 +263,19 @@
     </div>
 
     <!-- Modal: confirmar eliminación -->
-    <div id="modalDeleteConfirm" class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-5">
-      <div class="modal-content w-full max-w-[340px] bg-white rounded-3xl p-5 text-center shadow-2xl flex flex-col items-center">
-        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center text-xl mb-2"><i class="fa-solid fa-trash-can"></i></div>
+    <div id="modalDeleteConfirm"
+      class="modal modal--center is-closed fixed inset-0 bg-darkText/40 backdrop-blur-sm z-50 flex items-center justify-center p-5">
+      <div
+        class="modal-content w-full max-w-[340px] bg-white rounded-3xl p-5 text-center shadow-2xl flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center text-xl mb-2"><i
+            class="fa-solid fa-trash-can"></i></div>
         <h3 class="font-serif font-bold text-base text-darkText">¿Eliminar plato?</h3>
         <p id="deleteDishNameText" class="text-xs text-subText mt-1"></p>
         <div class="flex gap-2.5 w-full mt-4">
-          <button data-action="close-modal" data-id="remove" class="flex-1 py-2 bg-gray-100 text-subText font-bold rounded-xl text-xs hover:bg-gray-200 transition">Cancelar</button>
-          <button data-action="confirm-delete" class="flex-1 py-2 bg-rose-500 text-white font-bold rounded-xl text-xs hover:bg-rose-600 transition shadow">Eliminar</button>
+          <button data-action="close-modal" data-id="remove"
+            class="flex-1 py-2 bg-gray-100 text-subText font-bold rounded-xl text-xs hover:bg-gray-200 transition">Cancelar</button>
+          <button data-action="confirm-delete"
+            class="flex-1 py-2 bg-rose-500 text-white font-bold rounded-xl text-xs hover:bg-rose-600 transition shadow">Eliminar</button>
         </div>
       </div>
     </div>
@@ -222,4 +283,5 @@
 
   <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
