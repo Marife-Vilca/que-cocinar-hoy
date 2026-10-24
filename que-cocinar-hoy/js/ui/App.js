@@ -18,7 +18,6 @@ export class App {
   #targetDay = null; 
   #pendingDeleteId = null;
   #spinning = false;
-  #spinning = false;
   #backup;
 
   constructor(repo, plan, backup) {
