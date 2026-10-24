@@ -12,23 +12,34 @@ export class DishRepository {
     this.#dishes = storage.get("dishes", defaults).map((d) => new Dish(d));
   }
 
+  // Siempre ordenados alfabéticamente.
   getAll() {
-    return [...this.#dishes];
+    return [...this.#dishes].sort(Dish.compareByName);
   }
 
   getById(id) {
-    return this.#dishes.find((d) => d.id === id) ?? null;
+    return this.#dishes.find((d) => d.id === String(id)) ?? null;
+  }
+
+  // Busca un plato con el mismo nombre en la misma categoría.
+  findDuplicate(name, category, ignoreId = null) {
+    const key = Dish.normalizeName(name);
+    return (
+      this.#dishes.find(
+        (d) => d.id !== String(ignoreId) && d.category === category && Dish.normalizeName(d.name) === key
+      ) ?? null
+    );
   }
 
   save(dish) {
     const index = this.#dishes.findIndex((d) => d.id === dish.id);
     if (index >= 0) this.#dishes[index] = dish;
-    else this.#dishes.unshift(dish);
+    else this.#dishes.push(dish);
     this.#persist();
   }
 
   remove(id) {
-    this.#dishes = this.#dishes.filter((d) => d.id !== id);
+    this.#dishes = this.#dishes.filter((d) => d.id !== String(id));
     this.#persist();
   }
 

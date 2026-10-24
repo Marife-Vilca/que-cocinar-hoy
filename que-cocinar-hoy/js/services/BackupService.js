@@ -1,5 +1,6 @@
 const BACKUP_VERSION = 1;
 
+// Exporta e importa los datos de la app como archivo JSON.
 export class BackupService {
   #repo;
   #plan;

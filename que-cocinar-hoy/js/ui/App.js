@@ -8,22 +8,32 @@ const $ = (id) => document.getElementById(id);
 const VIEWS = ["ruleta", "semana", "catalogo"];
 const todayName = () => WEEK_DAYS[(new Date().getDay() + 6) % 7];
 
+const isHttpUrl = (text) => {
+  try {
+    return ["http:", "https:"].includes(new URL(text).protocol);
+  } catch {
+    return false;
+  }
+};
+
 // Controlador: conecta eventos del DOM con los servicios.
 export class App {
   #repo;
   #plan;
+  #backup;
   #modals;
   #category = "Todos";
-  #pendingDishId = null; 
-  #targetDay = null; 
+  #pendingDishId = null; // plato elegido en la ruleta
+  #targetDay = null; // día elegido en el plan semanal
   #pendingDeleteId = null;
+  #editingId = null; // null = agregando un plato nuevo
   #spinning = false;
-  #backup;
+  #toastTimer = null;
 
   constructor(repo, plan, backup) {
-    this.#backup = backup;
     this.#repo = repo;
     this.#plan = plan;
+    this.#backup = backup;
   }
 
   init() {
@@ -42,6 +52,7 @@ export class App {
     document.addEventListener("click", (e) => this.#onClick(e));
     $("searchInput").addEventListener("input", () => this.#renderCatalog());
     $("dishForm").addEventListener("submit", (e) => this.#saveDish(e));
+    $("dishForm").addEventListener("input", () => $("formError").classList.add("hidden"));
     $("importFile").addEventListener("change", (e) => this.#importData(e));
 
     this.#showView("ruleta");
@@ -52,22 +63,21 @@ export class App {
     const el = event.target.closest("[data-action]");
     if (!el) return;
     const { action, id } = el.dataset;
-    const dishId = Number(id);
 
     const handlers = {
       view: () => this.#showView(id),
       spin: () => this.#spin(),
-      pick: () => this.#openAssignModal(dishId),
+      pick: () => this.#openAssignModal(id),
       "confirm-assign": () => this.#confirmAssign(),
       "choose-day": () => this.#openSelectModal(id),
-      "assign-to-day": () => this.#assignToTargetDay(dishId),
+      "assign-to-day": () => this.#assignToTargetDay(id),
       "clear-day": () => { this.#plan.clear(id); this.#refresh(); },
       "reset-week": () => confirm("¿Deseas vaciar el plan semanal completo?") && (this.#plan.reset(), this.#refresh()),
       add: () => this.#openFormModal(),
-      edit: () => this.#openFormModal(this.#repo.getById(dishId)),
-      "request-delete": () => this.#openDeleteModal(dishId),
+      edit: () => this.#openFormModal(this.#repo.getById(id)),
+      "request-delete": () => this.#openDeleteModal(id),
       "confirm-delete": () => this.#confirmDelete(),
-      "reset-menu": () => confirm("¿Restaurar el catálogo con los platos iniciales?") && (this.#repo.restoreDefaults(), this.#refresh()),
+      "reset-menu": () => confirm("¿Restaurar los platos iniciales? Se perderán los que agregaste.") && (this.#repo.restoreDefaults(), this.#refresh()),
       filter: () => { this.#category = id; this.#renderCatalog(); },
       "export-data": () => this.#backup.export(),
       "import-data": () => $("importFile").click(),
@@ -97,6 +107,14 @@ export class App {
     this.#renderCatalog();
   }
 
+  #toast(message) {
+    const el = $("toast");
+    el.textContent = message;
+    el.classList.replace("opacity-0", "opacity-100");
+    clearTimeout(this.#toastTimer);
+    this.#toastTimer = setTimeout(() => el.classList.replace("opacity-100", "opacity-0"), 2500);
+  }
+
   // ---------- Ruleta ----------
   #availableDishes() {
     const cooked = this.#plan.cookedIds();
@@ -111,7 +129,7 @@ export class App {
     if (this.#spinning) return;
     const available = this.#availableDishes();
     if (available.length === 0) {
-      alert("¡Todos los platos ya están asignados en el plan semanal o no hay platos creados! Reinicia la semana o agrega más platos.");
+      alert("Todos los platos ya están en el plan semanal. Reinicia la semana o agrega más platos.");
       return;
     }
 
@@ -124,19 +142,6 @@ export class App {
       $("resultsContainer").innerHTML = Roulette.pick(available, ROULETTE_SIZE).map(tpl.resultCard).join("");
       this.#spinning = false;
     }, SPIN_MS);
-  }
-
-    async #importData(event) {
-    const [file] = event.target.files;
-    event.target.value = ""; 
-    if (!file || !confirm("Esto reemplazará los platos y el plan actuales. ¿Continuar?")) return;
-    try {
-      await this.#backup.import(file);
-      this.#refresh();
-      alert("Datos importados correctamente.");
-    } catch {
-      alert("El archivo no es válido.");
-    }
   }
 
   #openAssignModal(dishId) {
@@ -192,7 +197,7 @@ export class App {
     );
 
     $("categoryChips").innerHTML = ["Todos", ...CATEGORIES].map((c) => tpl.chip(c, c === this.#category)).join("");
-    $("catalogCounterText").textContent = `Mostrando ${filtered.length} de ${all.length} platos`;
+    $("catalogCounterText").textContent = `${filtered.length} de ${all.length} platos`;
     $("catalogContainer").innerHTML = filtered.length
       ? filtered.map(tpl.catalogItem).join("")
       : tpl.emptyCatalog();
@@ -201,11 +206,13 @@ export class App {
   #openFormModal(dish = null) {
     const form = $("dishForm");
     form.reset();
+    $("formError").classList.add("hidden");
+    this.#editingId = dish?.id ?? null;
     $("formModalTitle").textContent = dish ? "Editar Plato" : "Agregar Nuevo Plato";
     if (dish) {
-      Object.entries(dish).forEach(([key, value]) => {
-        if (form.elements[key]) form.elements[key].value = value;
-      });
+      form.elements["name"].value = dish.name;
+      form.elements["category"].value = dish.category;
+      form.elements["image"].value = dish.image;
     }
     this.#modals.form.open();
   }
@@ -213,16 +220,50 @@ export class App {
   #saveDish(event) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
-    this.#repo.save(new Dish({ ...data, id: Number(data.id) || undefined, name: data.name.trim() }));
+    const name = data.name.trim().replace(/\s+/g, " ");
+    const image = data.image.trim();
+
+    const error = this.#validate(name, data.category, image);
+    if (error) {
+      $("formError").textContent = error;
+      $("formError").classList.remove("hidden");
+      return;
+    }
+
+    const wasEditing = this.#editingId !== null;
+    this.#repo.save(new Dish({ id: this.#editingId ?? undefined, name, category: data.category, image }));
     this.#modals.form.close();
     this.#refresh();
+    this.#toast(wasEditing ? "Plato actualizado" : `«${name}» agregado en ${data.category}`);
+  }
+
+  #validate(name, category, image) {
+    if (!name) return "Escribe el nombre del plato.";
+    if (image && !isHttpUrl(image)) return "La URL de la foto no es válida. Debe empezar con https://";
+    if (this.#repo.findDuplicate(name, category, this.#editingId)) {
+      return `«${name}» ya está agregado en ${category}.`;
+    }
+    return null;
+  }
+
+  async #importData(event) {
+    const [file] = event.target.files;
+    event.target.value = ""; // permite volver a importar el mismo archivo
+    if (!file || !confirm("Esto reemplazará los platos y el plan actuales. ¿Continuar?")) return;
+    try {
+      await this.#backup.import(file);
+      this.#refresh();
+      alert("Datos importados correctamente.");
+    } catch {
+      alert("El archivo no es válido.");
+    }
   }
 
   #openDeleteModal(dishId) {
     const dish = this.#repo.getById(dishId);
     if (!dish) return;
     this.#pendingDeleteId = dishId;
-    $("deleteDishNameText").textContent = `¿Estás seguro de eliminar "${dish.name}" del catálogo?`;
+    $("deleteDishNameText").textContent = `¿Seguro que quieres eliminar "${dish.name}"?`;
     this.#modals.remove.open();
   }
 

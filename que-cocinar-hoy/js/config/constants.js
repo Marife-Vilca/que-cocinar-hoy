@@ -1,5 +1,5 @@
 export const WEEK_DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-export const CATEGORIES = ["Criollo", "Marino", "Rápido", "Pastas", "Sopas/Guisos", "Postre"];
+export const CATEGORIES = ["Guisos", "Sopas", "Menestras", "Marino", "Rápido", "Pastas", "Postre"];
 export const ROULETTE_SIZE = 3;
 export const SPIN_MS = 2200;
 export const STORAGE_PREFIX = "queCocinar";

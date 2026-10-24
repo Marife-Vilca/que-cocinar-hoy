@@ -1,6 +1,6 @@
 import { WEEK_DAYS } from "../config/constants.js";
 
-// Plan semanal: guarda solo IDs (no copias del plato). Se reinicia cada lunes.
+// Plan semanal: guarda solo IDs (como texto). Se reinicia cada lunes.
 export class WeeklyPlan {
   #storage;
   #plan;
@@ -15,7 +15,7 @@ export class WeeklyPlan {
   }
 
   assign(day, dishId) {
-    this.#plan[day] = dishId;
+    this.#plan[day] = dishId == null ? null : String(dishId);
     this.#persist();
   }
 
@@ -25,7 +25,7 @@ export class WeeklyPlan {
 
   removeDish(dishId) {
     WEEK_DAYS.forEach((day) => {
-      if (this.#plan[day] === dishId) this.#plan[day] = null;
+      if (this.#plan[day] === String(dishId)) this.#plan[day] = null;
     });
     this.#persist();
   }
@@ -42,14 +42,15 @@ export class WeeklyPlan {
     return { weekKey: this.#mondayKey(), plan: { ...this.#plan } };
   }
 
+  // Solo restaura el plan si pertenece a la semana actual.
   restore({ weekKey, plan }) {
     if (weekKey !== this.#mondayKey()) return;
-    this.#plan = { ...this.#emptyPlan(), ...plan };
+    this.#plan = this.#normalize(plan);
     this.#persist();
   }
 
   reset() {
-    this.#plan = this.#emptyPlan();
+    this.#plan = this.#normalize({});
     this.#persist();
   }
 
@@ -59,12 +60,13 @@ export class WeeklyPlan {
       this.#storage.set("weekKey", currentWeek);
       this.reset();
     } else {
-      this.#plan = { ...this.#emptyPlan(), ...this.#storage.get("plan", {}) };
+      this.#plan = this.#normalize(this.#storage.get("plan", {}));
     }
   }
 
-  #emptyPlan() {
-    return Object.fromEntries(WEEK_DAYS.map((day) => [day, null]));
+  // Asegura todos los días y IDs como texto (compatible con datos antiguos).
+  #normalize(plan) {
+    return Object.fromEntries(WEEK_DAYS.map((day) => [day, plan?.[day] == null ? null : String(plan[day])]));
   }
 
   // Identifica la semana por la fecha de su lunes.

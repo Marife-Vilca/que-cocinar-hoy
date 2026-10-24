@@ -6,10 +6,13 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Foco visible para navegación con teclado */
+:focus-visible { outline: 3px solid #1f2937; outline-offset: 2px; }
+
 .glass-card {
   background: #fff;
-  border: 1px solid rgba(224, 109, 83, 0.12);
-  box-shadow: 0 8px 20px -4px rgba(224, 109, 83, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  box-shadow: 0 8px 20px -4px rgba(200, 71, 46, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -26,8 +29,8 @@ body {
   100% { transform: rotate(2160deg) scale(1); }
 }
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 18px rgba(224, 109, 83, 0.35); }
-  50% { box-shadow: 0 0 32px rgba(224, 109, 83, 0.65); }
+  0%, 100% { box-shadow: 0 0 18px rgba(200, 71, 46, 0.35); }
+  50% { box-shadow: 0 0 32px rgba(200, 71, 46, 0.65); }
 }
 @keyframes cardFadeUp {
   from { opacity: 0; transform: translateY(14px); }
